@@ -65,7 +65,28 @@ Board initBoard(int size) {
 }
 
 void addPosition(PositionList& positionList, Position position) {
-    // TODO
+    // Step 1: Allocate array and assign to new ptr
+    Position* newptr;
+    newptr = new Position[positionList.size + 1];
+
+    // Step 2: Copy data from old ptr to new ptr
+    for (int i = 0; i < positionList.size; i++) {
+        newptr[i].x = positionList.ptr[i].x;
+        newptr[i].y = positionList.ptr[i].y;
+    }
+
+    // Step 3: Add element to array of new ptr
+    newptr[positionList.size].x = position.x;
+    newptr[positionList.size].y = position.y;
+
+    // Step 4: Free array of old ptr
+    delete[] positionList.ptr;
+
+    // Step 5: Direct old ptr to array which new ptr holds
+    positionList.ptr = newptr;
+
+    // Step 6: Increase size of positionList
+    positionList.size++;
 }
 
 PositionList getPositionList(Board board, int player) {
