@@ -55,6 +55,12 @@ Board initBoard(int size) {
         board.ptr[i] = new int[size];
     }
 
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            board.ptr[i][j] = 0;
+        }
+    }
+
     int i = size / 2 - 1;
     board.ptr[i][i] = 1;
     board.ptr[i][i + 1] = 2;
@@ -94,7 +100,7 @@ PositionList getPositionList(Board board, int player) {
     positionList.size = 0;
 
     // TODO
-    
+
     return positionList;
 }
 
@@ -112,7 +118,7 @@ int main() {
         cout << "(" << positionList.ptr[i].x << ", " << positionList.ptr[i].y << ")" << endl;
     }
 
-    // TODO: Free memory
+    // Free memory
     for (int i = 0; i < board.size; i++) {
         delete[] board.ptr[i];
     }
