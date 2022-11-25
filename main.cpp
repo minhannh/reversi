@@ -113,6 +113,12 @@ int main() {
     }
 
     // TODO: Free memory
+    for (int i = 0; i < board.size; i++) {
+        delete[] board.ptr[i];
+    }
+
+    delete[] board.ptr;
+    delete[] positionList.ptr;
 
     return 0;
 }
