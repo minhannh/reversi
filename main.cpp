@@ -86,7 +86,9 @@ void addPosition(PositionList& positionList, Position position) {
     newptr[positionList.size].y = position.y;
 
     // Step 4: Free array of old ptr
-    delete[] positionList.ptr;
+    if (positionList.ptr != nullptr) {
+        delete[] positionList.ptr;
+    }
 
     // Step 5: Direct old ptr to array which new ptr holds
     positionList.ptr = newptr;
@@ -98,8 +100,13 @@ void addPosition(PositionList& positionList, Position position) {
 PositionList getPositionList(Board board, int player) {
     PositionList positionList;
     positionList.size = 0;
+    positionList.ptr = nullptr;
 
     // TODO
+    Position position;
+    position.x = 9;
+    position.y = 2;
+    addPosition(positionList, position);
 
     return positionList;
 }
