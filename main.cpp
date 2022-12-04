@@ -62,10 +62,13 @@ Board initBoard(int size) {
     }
 
     int i = size / 2 - 1;
-    board.ptr[i][i] = 1;
-    board.ptr[i][i + 1] = 2;
-    board.ptr[i + 1][i] = 2;
-    board.ptr[i + 1][i + 1] = 1;
+    // board.ptr[i][i] = 1;
+    // board.ptr[i][i + 1] = 2;
+    // board.ptr[i + 1][i] = 2;
+    // board.ptr[i + 1][i + 1] = 1;
+    board.ptr[3][3] = 1;
+    board.ptr[3][4] = 2;
+    board.ptr[3][5] = 2;
 
     return board;
 }
@@ -103,10 +106,74 @@ PositionList getPositionList(Board board, int player) {
     positionList.ptr = nullptr;
 
     // TODO
-    Position position;
-    position.x = 9;
-    position.y = 2;
-    addPosition(positionList, position);
+    int size = board.size;
+    // Player 1 - width
+    if (player == 1) {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                // Case 1: 001200
+                if ((board.ptr[i][j] == 2) && (board.ptr[i][j - 1] == 1) && (board.ptr[i][j + 1] == 0)) {
+                    Position position;
+                    position.x = i;
+                    position.y = j + 1;
+                    addPosition(positionList, position);
+                }
+                // Case 2: 002100
+                if ((board.ptr[i][j] == 2) && (board.ptr[i][j - 1] == 0) && (board.ptr[i][j + 1] == 1)) {
+                        Position position;
+                        position.x = i;
+                        position.y = j - 1;
+                        addPosition(positionList, position);
+                }
+                // Case 3: 0022210
+                if ((board.ptr[i][j] == 2) && (board.ptr[i][j - 1] == 0) && (board.ptr[i][j + 1] == 2)) {
+                    int iPosition = i;
+                    int jPosition = j;
+                        for (int y = jPosition; y < size; y++) {
+                            if (board.ptr[iPosition][y] == 0) {
+                                break;
+                            }
+                            else if (board.ptr[iPosition][y] == 1) {
+                                Position position;
+                                position.x = i;
+                                position.y = j - 1;
+                                addPosition(positionList, position);
+                                break;
+                            }
+                        }
+                }
+                // Case 4: 0122000
+                if ((board.ptr[i][j] == 2) && (board.ptr[i][j - 1] == 1) && (board.ptr[i][j + 1] == 2)) {
+                    int iPosition = i;
+                    int jPosition = j;
+                        for (int y = jPosition; y < size; y++) {
+                            if (board.ptr[iPosition][y] == 1) {
+                                break;
+                            }
+                            else if (board.ptr[iPosition][y] == 0) {
+                                Position position;
+                                position.x = i;
+                                position.y = y;
+                                addPosition(positionList, position);
+                                break;
+                            }
+                        }
+                }
+            
+            }
+        }
+    }
+
+    // Player 2
+    if (player == 2) {
+
+    }
+    
+
+    // Position position;
+    // position.x = 9;
+    // position.y = 2;
+    // addPosition(positionList, position);
 
     return positionList;
 }
