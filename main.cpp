@@ -66,9 +66,11 @@ Board initBoard(int size) {
     // board.ptr[i][i + 1] = 2;
     // board.ptr[i + 1][i] = 2;
     // board.ptr[i + 1][i + 1] = 1;
-    board.ptr[3][3] = 1;
+    board.ptr[2][3] = 2;
     board.ptr[3][4] = 2;
-    board.ptr[3][5] = 2;
+    board.ptr[4][5] = 1;
+
+    // board.ptr[6][4] = 2;
 
     return board;
 }
@@ -107,7 +109,8 @@ PositionList getPositionList(Board board, int player) {
 
     // TODO
     int size = board.size;
-    // Player 1 - width
+    // PLAYER 1
+    // Horizontal
     if (player == 1) {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
@@ -129,6 +132,7 @@ PositionList getPositionList(Board board, int player) {
                 if ((board.ptr[i][j] == 2) && (board.ptr[i][j - 1] == 0) && (board.ptr[i][j + 1] == 2)) {
                     int iPosition = i;
                     int jPosition = j;
+                    int pos = 1;
                         for (int y = jPosition; y < size; y++) {
                             if (board.ptr[iPosition][y] == 0) {
                                 break;
@@ -163,12 +167,108 @@ PositionList getPositionList(Board board, int player) {
             }
         }
     }
+    // Vertical
+    if (player == 1) {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                // Case 1: 001200
+                if ((board.ptr[i][j] == 2) && (board.ptr[i - 1][j] == 1) && (board.ptr[i + 1][j] == 0)) {
+                    Position position;
+                    position.x = i + 1;
+                    position.y = j;
+                    addPosition(positionList, position);
+                }
 
-    // Player 2
-    if (player == 2) {
+                // Case 2: 002100
+                if ((board.ptr[i][j] == 2) && (board.ptr[i - 1][j] == 0) && (board.ptr[i + 1][j] == 1)) {
+                    Position position;
+                    position.x = i - 1;
+                    position.y = j;
+                    addPosition(positionList, position);
+                }
 
+                // Case 3: 022100
+                if ((board.ptr[i][j] == 2) && (board.ptr[i - 1][j] == 2) && (board.ptr[i + 1][j] == 1)) {
+                    int iPosition = i - 1;
+                    int jPosition = j;
+                    int pos = 1;
+                    for (int x = iPosition; x > 0; x--) {
+                            if (board.ptr[iPosition - pos][jPosition] == 1) {
+                                break;
+                            }
+                            else if (board.ptr[iPosition - pos][jPosition] == 0) {
+                                Position position;
+                                position.x = iPosition - pos;
+                                position.y = jPosition;
+                                addPosition(positionList, position);
+                                break;
+                            }
+                            pos++;
+                    }
+                }
+
+                // Case 4: 012200
+                if ((board.ptr[i][j] == 2) && (board.ptr[i - 1][j] == 1) && (board.ptr[i + 1][j] == 2)) {
+                    int iPosition = i + 1;
+                    int jPosition = j;
+                    int pos = 1;
+                    for (int x = iPosition; x < size; x++) {
+                        if (board.ptr[x][jPosition] == 1) {
+                            break;
+                        }
+                        else if (board.ptr[x][jPosition] == 0) {
+                            Position position;
+                            position.x = x;
+                            position.y = jPosition;
+                            addPosition(positionList, position);
+                            break;
+                        }
+                    }
+                }
+
+            }
+        }
     }
-    
+
+    //Left Diagonal
+    if (player == 1) {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                // Case 1: 001200
+                if ((board.ptr[i][j] == 2) && (board.ptr[i - 1][j - 1] == 1) && (board.ptr[i + 1][j + 1] == 0)) {
+                    Position position;
+                    position.x = i + 1;
+                    position.y = j + 1;
+                    addPosition(positionList, position);
+                }
+
+                // Case 2: 002100
+                if ((board.ptr[i][j] == 2) && (board.ptr[i - 1][j - 1] == 0) && (board.ptr[i + 1][j + 1] == 1)) {
+                    Position position;
+                    position.x = i - 1;
+                    position.y = j - 1;
+                    addPosition(positionList, position);
+                }
+
+                // Case 3:022100
+                if ((board.ptr[i][j] == 2) && (board.ptr[i - 1][j - 1] == 2) && (board.ptr[i + 1][j + 1] == 1)) {
+                    int y = j;
+                    for (int x = i; x >= 0; x--) {
+                        if (board.ptr[x][y] == 1) {
+                            break;
+                        }
+                        else if (board.ptr[x][y] == 0) {
+                            Position position;
+                            position.x = x;
+                            position.y = y;
+                            addPosition(positionList, position);
+                        }
+                            y--;
+                    }
+                }
+            }
+        }
+    } 
 
     // Position position;
     // position.x = 9;
