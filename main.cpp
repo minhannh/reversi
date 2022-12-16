@@ -66,11 +66,18 @@ Board initBoard(int size) {
     // board.ptr[i][i + 1] = 2;
     // board.ptr[i + 1][i] = 2;
     // board.ptr[i + 1][i + 1] = 1;
-    board.ptr[4][5] = 2;
-    board.ptr[4][4] = 2;
-    board.ptr[4][3] = 1;
 
-    // board.ptr[6][4] = 2;
+    board.ptr[3][3] = 1;
+    board.ptr[4][3] = 1;
+    board.ptr[5][3] = 1;
+    board.ptr[6][3] = 1;
+    board.ptr[4][2] = 1;
+    board.ptr[6][2] = 1;
+    board.ptr[6][4] = 1;
+
+    board.ptr[5][1] = 2;
+    board.ptr[5][2] = 2;
+    board.ptr[5][4] = 2;
 
     return board;
 }
@@ -109,9 +116,6 @@ PositionList getPositionList(Board board, int player) {
 
     // TODO
     int size = board.size;
-
-    // Identify player
-    player = 1;
     int play;
     int rival;
 
@@ -123,7 +127,6 @@ PositionList getPositionList(Board board, int player) {
         rival = 1;
     }
 
-    // PLAYER 1
     // Horizontal
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
@@ -133,6 +136,7 @@ PositionList getPositionList(Board board, int player) {
                 position.x = i;
                 position.y = j + 1;
                 addPosition(positionList, position);
+                
             }
 
             // Case 2: 002100
@@ -141,6 +145,7 @@ PositionList getPositionList(Board board, int player) {
                     position.x = i;
                     position.y = j - 1;
                     addPosition(positionList, position);
+                    
                 }
 
             // Case 3: 002210
@@ -189,6 +194,7 @@ PositionList getPositionList(Board board, int player) {
                 position.x = i + 1;
                 position.y = j;
                 addPosition(positionList, position);
+                
             }
 
             // Case 2: 002100
@@ -197,6 +203,7 @@ PositionList getPositionList(Board board, int player) {
                 position.x = i - 1;
                 position.y = j;
                 addPosition(positionList, position);
+                
             }
 
             // Case 3: 022100
@@ -250,6 +257,7 @@ PositionList getPositionList(Board board, int player) {
                 position.x = i + 1;
                 position.y = j + 1;
                 addPosition(positionList, position);
+                
             }
 
             // Case 2: 002100
@@ -258,6 +266,7 @@ PositionList getPositionList(Board board, int player) {
                 position.x = i - 1;
                 position.y = j - 1;
                 addPosition(positionList, position);
+                
             }
 
             // Case 3:022100
@@ -308,6 +317,7 @@ PositionList getPositionList(Board board, int player) {
                 position.x = i + 1;
                 position.y = j - 1;
                 addPosition(positionList, position);
+                
             }
 
             // Case 2: 002100
@@ -316,6 +326,7 @@ PositionList getPositionList(Board board, int player) {
                 position.x = i - 1;
                 position.y = j + 1;
                 addPosition(positionList, position);
+                
             }
 
             // Case 3:022100
@@ -355,24 +366,37 @@ PositionList getPositionList(Board board, int player) {
             }
         }
     }
-
-    // Position position;
-    // position.x = 9;
-    // position.y = 2;
-    // addPosition(positionList, position);
-
     return positionList;
+}
+
+PositionList deleteDuplicate (PositionList &positionList) {
+    for (int i = 0; i < positionList.size; i++) {
+        for (int j = i + 1; j < positionList.size; j++) {
+            if ((positionList.ptr[i].x == positionList.ptr[j].x) && (positionList.ptr[i].y == positionList.ptr[j].y)) {
+                for (int k = j; k < positionList.size; k++) {
+                    positionList.ptr[k].x = positionList.ptr[k + 1].x;
+                    positionList.ptr[k].y = positionList.ptr[k + 1].y;
+                }
+                positionList.size--;
+                j--;
+            }
+        }
+    }
+    return positionList;
+
 }
 
 void playMoves(Board& board, int player, Position position) {
     // TODO
+    
 }
 
 int main() {
     Board board = initBoard(8);
     printBoard(board);
 
-    PositionList positionList = getPositionList(board, 1);
+    PositionList positionList = getPositionList(board, 2);
+    deleteDuplicate(positionList);
 
     for (int i = 0; i < positionList.size; i++) {
         cout << "(" << positionList.ptr[i].x << ", " << positionList.ptr[i].y << ")" << endl;
