@@ -62,10 +62,22 @@ Board initBoard(int size) {
     }
 
     int i = size / 2 - 1;
-    board.ptr[i][i] = 1;
-    board.ptr[i][i + 1] = 2;
-    board.ptr[i + 1][i] = 2;
-    board.ptr[i + 1][i + 1] = 1;
+    // board.ptr[i][i] = 1;
+    // board.ptr[i][i + 1] = 2;
+    // board.ptr[i + 1][i] = 2;
+    // board.ptr[i + 1][i + 1] = 1;
+
+    board.ptr[3][3] = 1;
+    board.ptr[4][3] = 1;
+    board.ptr[5][3] = 1;
+    board.ptr[6][3] = 1;
+    board.ptr[4][2] = 1;
+    board.ptr[6][2] = 1;
+    board.ptr[6][4] = 1;
+
+    board.ptr[5][1] = 2;
+    board.ptr[5][2] = 2;
+    board.ptr[5][4] = 2;
 
     return board;
 }
