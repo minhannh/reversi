@@ -62,22 +62,10 @@ Board initBoard(int size) {
     }
 
     int i = size / 2 - 1;
-    // board.ptr[i][i] = 1;
-    // board.ptr[i][i + 1] = 2;
-    // board.ptr[i + 1][i] = 2;
-    // board.ptr[i + 1][i + 1] = 1;
-
-    board.ptr[3][3] = 1;
-    board.ptr[4][3] = 1;
-    board.ptr[5][3] = 1;
-    board.ptr[6][3] = 1;
-    board.ptr[4][2] = 1;
-    board.ptr[6][2] = 1;
-    board.ptr[6][4] = 1;
-
-    board.ptr[5][1] = 2;
-    board.ptr[5][2] = 2;
-    board.ptr[5][4] = 2;
+    board.ptr[i][i] = 1;
+    board.ptr[i][i + 1] = 2;
+    board.ptr[i + 1][i] = 2;
+    board.ptr[i + 1][i + 1] = 1;
 
     return board;
 }
@@ -386,14 +374,43 @@ PositionList deleteDuplicate (PositionList &positionList) {
 
 }
 
+void findBlock(Board& board, int player, Position position, int idirect, int jdirect) {
+    int size = board.size;
+    int i = position.x + idirect;
+    int j = position.y + jdirect;
+    Position block;
+    while ((0 <= i) && (i < size) && (0 <= j) && (j < size)) {
+        if (board.ptr[i][j] == player) {
+            block.x = i;
+            block.y = j;
+            int starti = position.x;
+            int startj = position.y;
+            while (board.ptr[starti][startj] != board.ptr[block.x][block.y]) {
+                board.ptr[starti][startj] = player;
+                starti += idirect;
+                startj += jdirect;
+            }
+            break;
+        }
+        i += idirect;
+        j += jdirect;
+    }
+
+}
+
 void playMoves(Board& board, int player, Position position) {
-    // TODO
-    
+    findBlock(board, player, position, 0, 1);
+    findBlock(board, player, position, 0, -1);
+    findBlock(board, player, position, 1, 0);
+    findBlock(board, player, position, 1, -1);
+    findBlock(board, player, position, 1, 1);
+    findBlock(board, player, position, -1, -1);
+    findBlock(board, player, position, -1, 0);
+    findBlock(board, player, position, -1, 1);
 }
 
 int main() {
     Board board = initBoard(8);
-    printBoard(board);
 
     PositionList positionList = getPositionList(board, 2);
     deleteDuplicate(positionList);
@@ -401,6 +418,10 @@ int main() {
     for (int i = 0; i < positionList.size; i++) {
         cout << "(" << positionList.ptr[i].x << ", " << positionList.ptr[i].y << ")" << endl;
     }
+
+    Position position = {7, 2};
+    playMoves(board, 2, position);
+    printBoard(board);
 
     // Free memory
     for (int i = 0; i < board.size; i++) {
